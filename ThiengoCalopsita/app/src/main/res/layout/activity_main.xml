@@ -23,6 +23,14 @@
         android:layout_below="@+id/tb_main"
         android:textColor="@color/black"/>
 
+    <RelativeLayout
+        android:id="@+id/rl_fragment_container"
+        android:layout_below="@+id/tb_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/inc_tb_bottom">
+    </RelativeLayout>
+
     <include android:id="@+id/inc_tb_bottom" layout="@layout/toolbar_bottom"/>
 
 

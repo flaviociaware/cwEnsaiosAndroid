@@ -1,4 +1,4 @@
-package br.com.ciaware.docid;
+    package br.com.ciaware.docid;
 
 import android.content.Intent;
 import android.os.Bundle;

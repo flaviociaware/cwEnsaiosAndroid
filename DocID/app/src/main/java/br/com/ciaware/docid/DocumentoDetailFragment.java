@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,17 +50,20 @@ public class DocumentoDetailFragment extends Fragment {
             mItem = DocIdContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
 
             Activity activity = this.getActivity();
-            CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
-            if (appBarLayout != null) {
+            //CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
+            //Toolbar appBarLayout = (Toolbar) activity.findViewById(R.id.detail_toolbar);
+            //TextView appBarLayout = (TextView) activity.findViewById(R.id.toolbar_title);
+
+
+                Log.v("ToolBar","carregado");
                 if (mItem.id
                         .length()<=4) {
-                    appBarLayout.setTitle(mItem.id);
+                    activity.setTitle(mItem.id);
                 } else {
-                    appBarLayout.setTitle(mItem.content);
+                    activity.setTitle(mItem.content);
 
                 }
 
-            }
         }
     }
 
@@ -90,10 +94,17 @@ public class DocumentoDetailFragment extends Fragment {
                     imgDocId.setImageResource(R.drawable.docid_cn);
 
                 } else if (mItem.id.toLowerCase().equals("cns")) {
-                    imgDocId.setImageResource(R.drawable.docid_cns);
 
+                    imgDocId.setImageResource(R.drawable.docid_cns);
+                    imgDocId.setMaxWidth(360);
+                    imgDocId.setMaxHeight(360);
+                    imgDocId.setAdjustViewBounds(true);
                 } else if (mItem.id.toLowerCase().equals("cpf")) {
+
                     imgDocId.setImageResource(R.drawable.docid_cpf);
+                    imgDocId.setMaxWidth(360);
+                    imgDocId.setMaxHeight(360);
+                    imgDocId.setAdjustViewBounds(true);
 
                 } else if (mItem.id.toLowerCase().equals("dnv")) {
                     imgDocId.setImageResource(R.drawable.docid_dnv);

@@ -1,7 +1,6 @@
 package br.com.ciaware.android.ensaios.thiengocalopsita;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +14,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.clans.fab.FloatingActionMenu;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private Drawer navigationDrawerRight;
     private AccountHeader headerNavigationLeft;
     private int mPositionClicked = 1;
+    private FloatingActionMenu fab;
 
 
     private OnCheckedChangeListener mOnCheckedChangeListener = new OnCheckedChangeListener() {
@@ -62,9 +63,10 @@ public class MainActivity extends AppCompatActivity {
         mToolbar.setLogo(R.drawable.ic_launcher);
         setSupportActionBar(mToolbar);
 
-        getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        /*
         mToolbarBottom = (Toolbar)findViewById(R.id.inc_tb_bottom);
 
         mToolbarBottom.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -108,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, "Settings pressed", Toast.LENGTH_SHORT).show();
             }
         });
+        */
 
         // FRAGMENT
         CarFragment frag = (CarFragment) getSupportFragmentManager().findFragmentByTag("mainFrag");
@@ -329,4 +332,26 @@ public class MainActivity extends AppCompatActivity {
         }
         return(0);
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState = navigationDrawerRight.saveInstanceState(outState);
+        outState = navigationDrawerLeft.saveInstanceState(outState);
+        outState = headerNavigationLeft.saveInstanceState(outState);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(navigationDrawerLeft.isDrawerOpen()){
+            navigationDrawerLeft.closeDrawer();
+        }
+        else if((fab!=null) && (fab.isOpened())){
+            fab.close(true);
+        }
+        else{
+            super.onBackPressed();
+        }
+    }
+
 }

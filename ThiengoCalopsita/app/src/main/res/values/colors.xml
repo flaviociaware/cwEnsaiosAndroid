@@ -10,4 +10,6 @@
     <color name="colorSecondText">#999</color>
     <color name="colorLink">#1ea4f7</color>
 
+    <color name="colorFAB">#FF9800</color>
+    <color name="colorFABPressed">#F57C00</color>
 </resources>

@@ -14,6 +14,8 @@ import android.widget.Toast;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 import java.util.List;
 
@@ -24,11 +26,12 @@ import br.com.ciaware.android.ensaios.thiengocalopsita.domain.Car;
 import br.com.ciaware.android.ensaios.thiengocalopsita.interfaces.RecyclerViewOnClickListenerHack;
 
 
-public class CarFragment extends Fragment implements RecyclerViewOnClickListenerHack {
+public class CarFragment extends Fragment implements RecyclerViewOnClickListenerHack, View.OnClickListener {
 
     private RecyclerView mRecyclerView;
     private List<Car> mList;
 
+    private FloatingActionMenu fab;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -51,6 +54,13 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
+                if(dy > 0){
+                    fab.hideMenuButton(true);
+                }
+                else{
+                    fab.showMenuButton(true);
+                }
+
                 LinearLayoutManager llm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
                 //GridLayoutManager llm = (GridLayoutManager) mRecyclerView.getLayoutManager();
 //                StaggeredGridLayoutManager llm = (StaggeredGridLayoutManager) mRecyclerView.getLayoutManager();
@@ -72,6 +82,7 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
                 }
             }
         });
+
         mRecyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getActivity(), mRecyclerView, this));
 
 
@@ -108,6 +119,70 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
         mRecyclerView.setAdapter( adapter );
 
 
+        /* Library: com.melnykov.fab.FloatingActionButton [FB]
+        fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
+        fab.attachToRecyclerView(mRecyclerView, new ScrollDirectionListener() {
+            @Override
+            public void onScrollDown() {
+
+            }
+
+            @Override
+            public void onScrollUp() {
+
+            }
+        }, new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                LinearLayoutManager llm = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+
+                CarAdapter adapter = (CarAdapter) mRecyclerView.getAdapter();
+
+                if (mList.size() == llm.findLastCompletelyVisibleItemPosition() + 1) {
+                    List<Car> listAux = ((MainActivity) getActivity()).getSetCarList(10);
+
+                    for (int i = 0; i < listAux.size(); i++) {
+                        adapter.addListItem(listAux.get(i), mList.size());
+                    }
+                }
+            }
+        });
+
+        fab.setOnClickListener(this);
+        */
+
+
+        fab = (FloatingActionMenu) getActivity().findViewById(R.id.fab);
+        fab.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
+            @Override
+            public void onMenuToggle(boolean b) {
+                Toast.makeText(getActivity(), "Is menu opened? "+(b ? "true" : "false"), Toast.LENGTH_SHORT).show();
+            }
+        });
+        fab.showMenuButton(true);
+        fab.setClosedOnTouchOutside(true);
+
+        FloatingActionButton fab1 = (FloatingActionButton) getActivity().findViewById(R.id.fab1);
+        FloatingActionButton fab2 = (FloatingActionButton) getActivity().findViewById(R.id.fab2);
+        FloatingActionButton fab3 = (FloatingActionButton) getActivity().findViewById(R.id.fab3);
+        FloatingActionButton fab4 = (FloatingActionButton) getActivity().findViewById(R.id.fab4);
+        FloatingActionButton fab5 = (FloatingActionButton) getActivity().findViewById(R.id.fab5);
+
+        fab1.setOnClickListener(this);
+        fab2.setOnClickListener(this);
+        fab3.setOnClickListener(this);
+        fab4.setOnClickListener(this);
+        fab5.setOnClickListener(this);
+
+
+
         return view;
     }
 
@@ -136,6 +211,11 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
 
         Toast.makeText(getActivity(), "onLongPressClickListener: " + position, Toast.LENGTH_SHORT).show();
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        Toast.makeText(getActivity(), "FAB Pressed", Toast.LENGTH_SHORT).show();
     }
 
     private static class RecyclerViewTouchListener implements RecyclerView.OnItemTouchListener{

@@ -1,6 +1,9 @@
 package br.com.ciaware.android.ensaios.thiengocalopsita.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,20 +16,30 @@ import java.util.List;
 
 import br.com.ciaware.android.ensaios.thiengocalopsita.R;
 import br.com.ciaware.android.ensaios.thiengocalopsita.domain.Car;
+import br.com.ciaware.android.ensaios.thiengocalopsita.extras.ImageHelper;
 import br.com.ciaware.android.ensaios.thiengocalopsita.interfaces.RecyclerViewOnClickListenerHack;
 
 /**
  * Created by viniciusthiengo on 4/5/15.
  */
 public class CarAdapter extends RecyclerView.Adapter<CarAdapter.MyViewHolder> {
+    private Context mContext;
     private List<Car> mList;
     private LayoutInflater mLayoutInflater;
     private RecyclerViewOnClickListenerHack mRecyclerViewOnClickListenerHack;
-
+    private float scale;
+    private int width;
+    private int height;
 
     public CarAdapter(Context c, List<Car> l){
+        mContext=c;
         mList = l;
         mLayoutInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        scale = mContext.getResources().getDisplayMetrics().density;
+        width = mContext.getResources().getDisplayMetrics().widthPixels - (int)(14*scale+0.5f);
+        height = (width/16)*9;
+
     }
 
 
@@ -35,7 +48,8 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.MyViewHolder> {
         // Estado darth
 
         Log.i("LOG", "onCreateViewHolder()");
-        View v = mLayoutInflater.inflate(R.layout.item_car, viewGroup, false);
+        //View v = mLayoutInflater.inflate(R.layout.item_car, viewGroup, false);
+        View v = mLayoutInflater.inflate(R.layout.item_car_card, viewGroup, false);
         MyViewHolder mvh = new MyViewHolder(v);
         return mvh;
     }
@@ -44,9 +58,28 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.MyViewHolder> {
     public void onBindViewHolder(MyViewHolder myViewHolder, int position) {
         // Chamado a todo momento [FB]
         Log.i("LOG", "onBindViewHolder()");
-        myViewHolder.ivCar.setImageResource( mList.get(position).getPhoto() );
+        myViewHolder.ivCar.setImageResource(mList.get(position).getPhoto());
         myViewHolder.tvModel.setText(mList.get(position).getModel() );
         myViewHolder.tvBrand.setText( mList.get(position).getBrand() );
+
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
+            myViewHolder.ivCar.setImageResource(mList.get(position).getPhoto());
+        } else {
+            Bitmap bitmap = BitmapFactory.decodeResource(mContext.getResources(), mList.get(position).getPhoto());
+            bitmap = Bitmap.createScaledBitmap(bitmap, width, height, false);
+            bitmap = ImageHelper.getRoundedCornerBitmap(mContext, bitmap, 10, width, height, false, false, true, true);
+            myViewHolder.ivCar.setImageBitmap(bitmap);
+        }
+
+
+
+//        try {
+//            YoYo.with(Techniques.Tada)
+//                    .duration(700)
+//                    .playOn(myViewHolder.itemView);
+//        } catch (Exception e) {
+//
+//        }
     }
 
     @Override

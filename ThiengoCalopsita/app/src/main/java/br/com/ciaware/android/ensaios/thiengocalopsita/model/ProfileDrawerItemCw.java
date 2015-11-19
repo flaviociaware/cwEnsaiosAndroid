@@ -13,12 +13,13 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 
 public class ProfileDrawerItemCw extends ProfileDrawerItem {
     public static boolean profileListOpen = false;
+    private int background;
 
 
     public static void setAccountHeader(AccountHeader accountHeader) {
         for (IProfile profile : accountHeader.getProfiles()) {
-            if (profile instanceof  ProfileDrawerItemCw) {
-                ((ProfileDrawerItemCw) profile).accountHeader=accountHeader;
+            if (profile instanceof ProfileDrawerItemCw) {
+                ((ProfileDrawerItemCw) profile).accountHeader = accountHeader;
             }
         }
     }
@@ -32,6 +33,7 @@ public class ProfileDrawerItemCw extends ProfileDrawerItem {
     public ProfileDrawerItemCw(AccountHeader accountHeader) {
         this.accountHeader = accountHeader;
     }
+
     @Override
     public StringHolder getEmail() {
         Log.v("events getEmail()", Boolean.toString(ProfileDrawerItemCw.profileListOpen));
@@ -49,5 +51,17 @@ public class ProfileDrawerItemCw extends ProfileDrawerItem {
         return result;
     }
 
+    public int getBackground() {
+        return background;
+    }
+
+    public void setBackground(int background) {
+        this.background = background;
+    }
+
+    public ProfileDrawerItemCw withBackground(int background) {
+        this.background = background;
+        return this;
+    }
 }
 

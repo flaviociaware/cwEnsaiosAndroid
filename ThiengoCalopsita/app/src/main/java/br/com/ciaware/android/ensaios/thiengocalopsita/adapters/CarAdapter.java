@@ -31,15 +31,23 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.MyViewHolder> {
     private int width;
     private int height;
 
+    private boolean withAnimation;
+    private boolean withCardLayout;
+
     public CarAdapter(Context c, List<Car> l){
-        mContext=c;
+        this(c, l, true, true);
+    }
+    public CarAdapter(Context c, List<Car> l, boolean wa, boolean wcl){
+        mContext = c;
         mList = l;
         mLayoutInflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        scale = mContext.getResources().getDisplayMetrics().density;
-        width = mContext.getResources().getDisplayMetrics().widthPixels - (int)(14*scale+0.5f);
-        height = (width/16)*9;
+        withAnimation = wa;
+        withCardLayout = wcl;
 
+        scale = mContext.getResources().getDisplayMetrics().density;
+        width = mContext.getResources().getDisplayMetrics().widthPixels - (int)(14 * scale + 0.5f);
+        height = (width / 16) * 9;
     }
 
 
@@ -127,4 +135,5 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.MyViewHolder> {
             }
         }
     }
+
 }

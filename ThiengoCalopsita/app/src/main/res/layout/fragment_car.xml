@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="br.com.thiengo.tcmaterialdesign.fragments.CarFragment">
+    tools:context="br.com.ciaware.android.ensaios.thiengocalopsita.fragments.CarFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_list"

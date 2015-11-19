@@ -1,6 +1,7 @@
 package br.com.ciaware.android.ensaios.thiengocalopsita.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,8 +18,10 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import br.com.ciaware.android.ensaios.thiengocalopsita.CarActivity;
 import br.com.ciaware.android.ensaios.thiengocalopsita.MainActivity;
 import br.com.ciaware.android.ensaios.thiengocalopsita.R;
 import br.com.ciaware.android.ensaios.thiengocalopsita.adapters.CarAdapter;
@@ -27,11 +30,23 @@ import br.com.ciaware.android.ensaios.thiengocalopsita.interfaces.RecyclerViewOn
 
 
 public class CarFragment extends Fragment implements RecyclerViewOnClickListenerHack, View.OnClickListener {
+    protected static final String TAG = "LOG";
+    protected RecyclerView mRecyclerView;
+    protected List<Car> mList;
+    protected FloatingActionMenu fab;
 
-    private RecyclerView mRecyclerView;
-    private List<Car> mList;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    private FloatingActionMenu fab;
+        if(savedInstanceState != null){
+            mList = savedInstanceState.getParcelableArrayList("mList");
+        }
+        else{
+            mList = ((MainActivity) getActivity()).getCarsByCategory(0);
+        }
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -117,7 +132,7 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
 
         // adapter.setRecyclerViewOnClickListenerHack(this);
         mRecyclerView.setAdapter( adapter );
-
+        setFloatingActionButton();
 
         /* Library: com.melnykov.fab.FloatingActionButton [FB]
         fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
@@ -159,6 +174,10 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
         */
 
 
+
+        return view;
+    }
+    public void setFloatingActionButton(){
         fab = (FloatingActionMenu) getActivity().findViewById(R.id.fab);
         fab.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
             @Override
@@ -180,11 +199,8 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
         fab3.setOnClickListener(this);
         fab4.setOnClickListener(this);
         fab5.setOnClickListener(this);
-
-
-
-        return view;
     }
+
 
 
     @Override
@@ -202,7 +218,9 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
 
         }
 
-
+        Intent intent = new Intent(getActivity(), CarActivity.class);
+        intent.putExtra("car", mList.get( position ));
+        getActivity().startActivity(intent);
 
     }
 
@@ -213,10 +231,6 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
 
     }
 
-    @Override
-    public void onClick(View v) {
-        Toast.makeText(getActivity(), "FAB Pressed", Toast.LENGTH_SHORT).show();
-    }
 
     private static class RecyclerViewTouchListener implements RecyclerView.OnItemTouchListener{
 
@@ -271,5 +285,37 @@ public class CarFragment extends Fragment implements RecyclerViewOnClickListener
         public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        String aux = "";
+
+        switch( v.getId() ){
+            case R.id.fab1:
+                aux = "Fab 1 clicked";
+                break;
+            case R.id.fab2:
+                aux = "Fab 2 clicked";
+                break;
+            case R.id.fab3:
+                aux = "Fab 3 clicked";
+                break;
+            case R.id.fab4:
+                aux = "Fab 4 clicked";
+                break;
+            case R.id.fab5:
+                aux = "Fab 5 clicked";
+                break;
+        }
+
+        Toast.makeText(getActivity(), aux, Toast.LENGTH_SHORT).show();
+    }
+
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("mList", (ArrayList<Car>) mList);
     }
 }

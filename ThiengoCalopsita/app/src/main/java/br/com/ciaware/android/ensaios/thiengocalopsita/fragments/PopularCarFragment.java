@@ -75,7 +75,7 @@ public class PopularCarFragment extends CarFragment {
         adapter.setRecyclerViewOnClickListenerHack(this);
         mRecyclerView.setAdapter(adapter);
 
-        setFloatingActionButton();
+        setFloatingActionButton(view);
 
         return view;
     }

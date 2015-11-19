@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.Toolbar;
@@ -95,9 +97,21 @@ public class CarActivity extends AppCompatActivity {
         tvBrand.setText(car.getBrand());
         tvDescription.setText( car.getDescription() );
 
-        navigationDrawerLeft = new DrawerBuilder(this)
-            .withActivity(this)
-            .build();
+        navigationDrawerLeft = new DrawerBuilder()
+                .withActivity(this)
+                .withToolbar(mToolbar)
+                .withActionBarDrawerToggle(false)
+                .withCloseOnClick(true)
+                .withActionBarDrawerToggleAnimated(false)
+                .withActionBarDrawerToggle(new ActionBarDrawerToggle(this, new DrawerLayout(this), R.string.drawer_open, R.string.drawer_close) {
+                    @Override
+                    public void onDrawerSlide(View drawerView, float slideOffset) {
+                        super.onDrawerSlide(drawerView, slideOffset);
+                        navigationDrawerLeft.closeDrawer();
+                        finish();
+                    }
+                })
+                .build();
     }
 
 

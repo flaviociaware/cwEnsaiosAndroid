@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -22,8 +23,7 @@ public class LineChartActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         setContentView(R.layout.activity_line_chart);
 
         mCharts[0] = (LineChart) findViewById(R.id.chart1);
@@ -33,7 +33,7 @@ public class LineChartActivity extends AppCompatActivity {
 
         //mTf = Typeface.createFromAsset(getAssets(), "OpenSans-Bold.ttf");
 
-        LineData data = getData(36, 100);
+        LineData data = getData(36, 300);
         data.setValueTypeface(mTf);
 
         for (int i = 0; i < mCharts.length; i++)
@@ -49,6 +49,8 @@ public class LineChartActivity extends AppCompatActivity {
     };
 
     private void setupChart(LineChart chart, LineData data, int color) {
+
+
 
         // no description text
         chart.setDescription("");
@@ -79,8 +81,15 @@ public class LineChartActivity extends AppCompatActivity {
         chart.setData(data);
 
         // get the legend (only possible after setting data)
+
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setValueFormatter(new MyYAxisValueFormatter());
+
+        leftAxis.setEnabled(true);
+        leftAxis.setAxisMinValue(0);
+
         Legend l = chart.getLegend();
-        l.setEnabled(false);
+        l.setEnabled(true);
 
         chart.getAxisLeft().setEnabled(false);
         chart.getAxisRight().setEnabled(false);
@@ -100,6 +109,7 @@ public class LineChartActivity extends AppCompatActivity {
             xVals.add(mMonths[i % 12]);
         }
 
+
         ArrayList<Entry> yVals = new ArrayList<Entry>();
 
         for (int i = 0; i < count; i++) {
@@ -107,8 +117,10 @@ public class LineChartActivity extends AppCompatActivity {
             yVals.add(new Entry(val, i));
         }
 
+        String[] legend = new String[]{"Segunda","Terca","Quarta"};
+
         // create a dataset and give it a type
-        LineDataSet set1 = new LineDataSet(yVals, "DataSet 1");
+        LineDataSet set1 = new LineDataSet(yVals,"Teste");
         // set1.setFillAlpha(110);
         // set1.setFillColor(Color.RED);
 
@@ -117,7 +129,7 @@ public class LineChartActivity extends AppCompatActivity {
         set1.setColor(Color.WHITE);
         set1.setCircleColor(Color.WHITE);
         set1.setHighLightColor(Color.WHITE);
-        set1.setDrawValues(false);
+        set1.setDrawValues(true);
 
         ArrayList<LineDataSet> dataSets = new ArrayList<LineDataSet>();
         dataSets.add(set1); // add the datasets
@@ -127,4 +139,6 @@ public class LineChartActivity extends AppCompatActivity {
 
         return data;
     }
+
+
 }
